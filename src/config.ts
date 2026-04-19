@@ -7,10 +7,11 @@ import type {
 import type { FriendLink } from "./types/friend"
 
 export const siteConfig: SiteConfig = {
-    title: "Momo",
+    title: "fffg",
     subTitle: "Blog",
 
     favicon: "/favicon/favicon.ico", // Path of the favicon, relative to the /public directory
+    //TODO: need a new icon
 
     pageSize: 6, // Number of posts per page
     toc: {
@@ -21,16 +22,16 @@ export const siteConfig: SiteConfig = {
         enable: true // Whether to enable blog navigation in the blog footer
     },
     comments: {
-        enable: true, // Whether to enable comments
-        backendUrl: "https://api-momo.motues.top" // Backend URL for comments
+        enable: false, // Whether to enable comments
+        backendUrl: "null" // Backend URL for comments
     }
 }
 
 export const profileConfig: ProfileConfig = {
-    avatar: "assets/Motues.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
-    name: "Motues",
-    description: "Life is colorful!",
-    indexPage: "https://motues.top",
+    avatar: "assets/fffg.jpg", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+    name: "fffg",
+    description: "",
+    indexPage: "https://fffg-o.github.io",
     startYear: 2024,
 }
 
