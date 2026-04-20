@@ -5,6 +5,8 @@ const translation: Translation = {
         home: "首页",
         archive: "归档",
         about: "关于",
+        blog: "博客",
+        program:"项目",
         friends: "友链",
     },
     cover: {
@@ -104,6 +106,9 @@ const translation: Translation = {
         light: "切换到 浅色 模式",
         dark: "切换到 深色 模式",
         system: "切换到 跟随系统 模式"
+    },
+    foot:{
+        pow:"基于"
     }
 }
 

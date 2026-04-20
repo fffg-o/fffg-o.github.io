@@ -32,7 +32,7 @@ export const profileConfig: ProfileConfig = {
     name: "fffg",
     description: "",
     indexPage: "https://fffg-o.github.io",
-    startYear: 2024,
+    startYear: 2026,
 }
 
 export const licenseConfig: LicenseConfig = {

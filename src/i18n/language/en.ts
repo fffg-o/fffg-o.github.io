@@ -5,6 +5,8 @@ const translation: Translation = {
         home: "Home",
         archive: "Archive",
         about: "About",
+        blog: "Blog",
+        program:"Program",
         friends: "Friends",
     },
     cover: {
@@ -104,6 +106,9 @@ const translation: Translation = {
         light: "Switch to Light Mode",
         dark: "Switch to Dark Mode",
         system: "Switch to System Mode"
+    },
+    foot:{
+        pow:"Powered by"
     }
 }
 

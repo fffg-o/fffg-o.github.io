@@ -3,6 +3,8 @@ export interface Translation {
         home: string;
         archive: string;
         about: string;
+        blog: string;
+        program:string;
         friends: string;
     };
     cover: {
@@ -102,5 +104,8 @@ export interface Translation {
         light: string;
         dark: string;
         system: string;
+    },
+    foot:{
+        pow:string;
     }
 }

@@ -36,6 +36,8 @@ const indexPage = getRelativeLocaleUrl(currentLang, "/");
 const archivesPage = getRelativeLocaleUrl(currentLang, "/archives/");
 const friendsPage = getRelativeLocaleUrl(currentLang, "/friends/");
 const aboutPage = getRelativeLocaleUrl(currentLang, "/about/");
+const blogPage = getRelativeLocaleUrl(currentLang, "/blog/");
+const programPage = getRelativeLocaleUrl(currentLang, "/program/");
 
 let introPage : string;
 
@@ -130,6 +132,22 @@ if (profileConfig.indexPage) {
               }`}>
               {t("header.about")}
           </a>
+
+          <a href={ blogPage } class={`transition-colors rounded-lg px-3 py-1 mx-1 hover:text-current ${
+              Astro.url.pathname === blogPage
+                  ? 'bg-[var(--button-hover-color)]' 
+                  : 'hover:bg-[var(--button-hover-color)]'
+              }`}>
+              {t("header.blog")}
+          </a>
+          <a href={ programPage } class={`transition-colors rounded-lg px-3 py-1 mx-1 hover:text-current ${
+              Astro.url.pathname === programPage
+                  ? 'bg-[var(--button-hover-color)]' 
+                  : 'hover:bg-[var(--button-hover-color)]'
+              }`}>
+              {t("header.program")}
+          </a>
+
           <!-- 友链链接 -->
           <a href={ friendsPage } class={`transition-colors rounded-lg px-3 py-1 mx-1 hover:text-current ${
               Astro.url.pathname === friendsPage 
