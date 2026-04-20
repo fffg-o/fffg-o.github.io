@@ -22,7 +22,8 @@ import svelte from "@astrojs/svelte";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://fffg-o.github.io/per-website/', // Root URL of site
+  site: 'https://fffg-o.github.io',
+  base: '/per-website/', // Root URL of site
   i18n: {
     locales: ['zh-cn', 'en'],
     defaultLocale: 'zh-cn',
