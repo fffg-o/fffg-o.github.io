@@ -4,7 +4,7 @@ pubDate: 2026-01-01
 description: Website Configuration
 category: Instruction
 image: "./images/banner.png"
-draft: false
+draft: true
 slugId: momo/intro/release
 pinTop: 1
 ---

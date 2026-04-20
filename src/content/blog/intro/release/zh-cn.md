@@ -4,7 +4,7 @@ pubDate: 2026-01-01
 description: 网站配置
 category: 指南
 image: "./images/banner.png"
-draft: false
+draft: true
 slugId: momo/intro/release
 pinTop: 1
 ---
