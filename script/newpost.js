@@ -61,15 +61,19 @@ function ensureSafeFolderPath(folderPath) {
     return normalized;
 }
 
+function toYamlString(value) {
+    return JSON.stringify(String(value));
+}
+
 function buildFrontmatter({ title, pubDate, description, category, slugId }) {
     return `---
-title: ${title}
+title: ${toYamlString(title)}
 pubDate: ${pubDate}
-description: ${description}
-category: ${category}
+description: ${toYamlString(description)}
+category: ${toYamlString(category)}
 image: ""
 draft: true
-slugId: ${slugId}
+slugId: ${toYamlString(slugId)}
 pinTop: 0
 ---
 `;
