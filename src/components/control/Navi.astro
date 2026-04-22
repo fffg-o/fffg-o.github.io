@@ -3,7 +3,7 @@ import { i18n } from "astro:config/client";
 import i18nit from '@i18n/translation'
 import { getRelativeLocaleUrl } from '@utils/url-utils';
 
-const { page } = Astro.props;
+const { page, routeBase = "/blog" } = Astro.props;
 
 const currentPage = page.currentPage;
 const totalPages = page.lastPage;
@@ -41,7 +41,7 @@ function getVisiblePages(current: number, total: number) {
 const visiblePages = getVisiblePages(currentPage, totalPages);
 
 const getPageUrl = (p: number) => {
-  return `/blog/${p}/`;
+  return `${routeBase}/${p}/`;
 };
 
 const currentLang = Astro.currentLocale || i18n!.defaultLocale;

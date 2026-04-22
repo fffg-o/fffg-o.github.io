@@ -4,11 +4,10 @@ import Cover from "@components/Cover.astro";
 import Markdown from "@components/misc/Markdown.astro";
 
 import { siteConfig } from "@/config";
-import { getSpec } from "@utils/content-utils";
+import { getNotesEntrySort } from "@utils/content-utils";
 
 import { i18n } from "astro:config/client";
 import i18nit from "@i18n/translation";
-import { render } from "astro:content";
 
 export function getStaticPaths() {
   return i18n.locales.map((locale) => {
@@ -21,28 +20,31 @@ export function getStaticPaths() {
   });
 }
 
-const currentLang = Astro.currentLocale || i18n!.defaultLocale;
+const { locale = i18n.defaultLocale } = Astro.params;
+const currentLang = Astro.currentLocale || i18n.defaultLocale;
 const t = i18nit(currentLang);
+const notesEntries = await getNotesEntrySort(currentLang);
 
-const homePost =
-  (await getSpec(currentLang, "notes")) ||
-  (await getSpec(i18n.defaultLocale, "notes"));
+if (notesEntries.length > 0) {
+  const target = locale === i18n.defaultLocale
+    ? "/notes/1/"
+    : `/${locale}/notes/1/`;
 
-if (!homePost) {
-  throw new Error("No home content found");
+  return Astro.redirect(target);
 }
 
-const { Content } = await render(homePost);
-
-const pageTitle = siteConfig.title;
+const pageTitle = `${t("cover.title.notes")} - ${siteConfig.title}`;
+const emptyMessage = currentLang === "en"
+  ? "No notes have been published yet."
+  : "还没有发布任何随笔。";
 ---
 
 <MainPageLayout title={pageTitle} lang={currentLang}>
   <Cover title={t("cover.title.notes")} subTitle={t("cover.subTitle.notes")} />
 
-  <div class="max-w-[var(--page-width)] mx-auto px-4">
-    <Markdown class="mb-10 markdown-content onload-animation">
-      <Content />
+  <div class="max-w-[var(--page-width)] mx-auto px-4 pb-10">
+    <Markdown class="markdown-content onload-animation">
+      <p>{emptyMessage}</p>
     </Markdown>
   </div>
 </MainPageLayout>

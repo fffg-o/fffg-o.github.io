@@ -1,19 +1,19 @@
 ---
-import { blogCoverUrl} from '@utils/url-utils'
+import { blogCoverUrl, notesCoverUrl } from '@utils/url-utils'
 import PostCard from '@components/PostCard.astro';
-import type { CollectionEntry } from 'astro:content';
 
-const { page } = Astro.props;
+const { page, routeBase = "/blog", collectionName = "blog" } = Astro.props;
 
 ---
-{page.data.map((entry: CollectionEntry<"blog">) => (
+{page.data.map((entry: any) => (
         <PostCard 
             entry={entry}
             title={entry.data.title} 
             description={entry.data.description} 
-            image={blogCoverUrl(entry.data.image, entry.id)}
+            image={collectionName === "notes" ? notesCoverUrl(entry.data.image, entry.id) : blogCoverUrl(entry.data.image, entry.id)}
             pubDate={entry.data.pubDate}
             url={entry.id} 
-            fallback={entry.isFallback}>
+            fallback={entry.isFallback}
+            routeBase={routeBase}>
         </PostCard>
 ))}

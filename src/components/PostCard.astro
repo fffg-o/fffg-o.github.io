@@ -2,8 +2,7 @@
 import "@styles/global.css"
 import ImageModule from "./misc/ImageModule.astro";
 
-import type { CollectionEntry } from 'astro:content';
-import { getCollection, render } from 'astro:content'
+import { render } from 'astro:content'
 
 import { getRelativeLocaleUrl } from '@utils/url-utils';
 import { formatFullDate } from '@/utils/time'
@@ -13,21 +12,22 @@ import i18nit from '@i18n/translation'
 import { Icon } from "astro-icon/components";
 
 interface Props {
-    entry: CollectionEntry<'blog'>;
+    entry: any;
     title: string;
     description: string;
     image: string;
     pubDate: Date;
     url: string;
     fallback: boolean;
+    routeBase?: string;
 }
 
-const { entry, title, description, image, pubDate, url, fallback } = Astro.props;
+const { entry, title, description, image, pubDate, url, fallback, routeBase = "/blog" } = Astro.props;
 
 const currentLang = Astro.currentLocale || i18n!.defaultLocale;
 const t = i18nit(currentLang);
 
-const pageUrl = getRelativeLocaleUrl(currentLang, "/blog/" + url);
+const pageUrl = getRelativeLocaleUrl(currentLang, `${routeBase}/${url}`);
 const { remarkPluginFrontmatter } = await render(entry);
 ---
 

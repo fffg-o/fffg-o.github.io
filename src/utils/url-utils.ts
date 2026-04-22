@@ -13,6 +13,21 @@ export function baseUrl(path: string) {
 	return joinUrl("", import.meta.env.BASE_URL, path);
 }
 
+function contentCoverUrl(collectionName: string, contentPath: string, entryName: string): string {
+    if (!contentPath) return '';
+    
+    if (contentPath.startsWith('http')) {
+        return contentPath;
+    }
+
+    if (contentPath.startsWith('./')) {
+        contentPath = contentPath.substring(2);
+    }
+    
+    const normalizedPath = contentPath.startsWith('/') ? contentPath.slice(1) : contentPath;
+    return joinUrl(`content/${collectionName}/`, entryName, normalizedPath)
+}
+
 /**
  * 将相对于content/blog目录的路径转换为相对于src目录的路径
  * @param contentPath 相对于content/blog目录的路径
@@ -20,23 +35,11 @@ export function baseUrl(path: string) {
  * @returns 相对于src目录的路径
  */
 export function blogCoverUrl(contentPath: string, blogName: string): string {
+    return contentCoverUrl("blog", contentPath, blogName)
+}
 
-    if (!contentPath) return '';
-    
-    if (contentPath.startsWith('http')) {
-        return contentPath;
-    }
-
-    // 处理相对路径 ./ 开头的情况
-    if (contentPath.startsWith('./')) {
-        contentPath = contentPath.substring(2);
-    }
-    
-    // 移除可能的前导斜杠
-    const normalizedPath = contentPath.startsWith('/') ? contentPath.slice(1) : contentPath;
-    
-    // 构造相对于src目录的路径，包含博客名称文件夹
-    return joinUrl("content/blog/", blogName, normalizedPath)
+export function notesCoverUrl(contentPath: string, noteName: string): string {
+    return contentCoverUrl("notes", contentPath, noteName)
 }
 
 export function getRelativeLocaleUrl(lang: string, path: string) : string { 

@@ -1,0 +1,75 @@
+---
+import MainPageLayout from "@layouts/MainPageLayout.astro";
+import Cover from "@components/Cover.astro";
+import PostPage from "@components/PostPage.astro";
+import Navi from "@components/control/Navi.astro";
+import FabMenu from "@components/control/FabMenu.astro";
+
+import { getNotesEntrySort } from "@utils/content-utils";
+import { siteConfig } from "@/config";
+import { i18n } from "astro:config/client";
+import type { CollectionEntry } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+import i18nit from "@i18n/translation";
+
+const { page } = Astro.props;
+const currentLang = Astro.currentLocale || i18n!.defaultLocale;
+const t = i18nit(currentLang);
+
+export const getStaticPaths = (async ({ paginate }) => {
+  function createPinTopSort() {
+    return (a: CollectionEntry<"notes">, b: CollectionEntry<"notes">) => {
+      const pinTopA = a.data.pinTop ?? 0;
+      const pinTopB = b.data.pinTop ?? 0;
+
+      if (pinTopA > 0 && pinTopB > 0) {
+        return pinTopB - pinTopA;
+      }
+
+      if (pinTopA > 0) return -1;
+      if (pinTopB > 0) return 1;
+
+      return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+    };
+  }
+
+  const paths = [];
+  for (const locale of i18n.locales) {
+    const localeCode = typeof locale === "string" ? locale : locale.path;
+    const localeParam =
+      localeCode === i18n.defaultLocale ? undefined : localeCode;
+    const notesEntries = await getNotesEntrySort(
+      localeParam,
+      undefined,
+      createPinTopSort(),
+    );
+    if (notesEntries.length === 0) {
+      continue;
+    }
+
+    const paginatedPaths = paginate(notesEntries, {
+      pageSize: siteConfig.pageSize,
+      params: { locale: localeParam },
+      format: (pageNum) => {
+        return localeParam
+          ? `/${localeParam}/notes/${pageNum}`
+          : `/notes/${pageNum}`;
+      },
+    });
+
+    paths.push(...paginatedPaths);
+  }
+
+  return paths;
+}) satisfies GetStaticPaths;
+
+const pageTitle = `${t("cover.title.notes")} - ${siteConfig.title}`;
+---
+
+<MainPageLayout title={pageTitle} lang={currentLang}>
+  <Cover title={t("cover.title.notes")} subTitle={t("cover.subTitle.notes")} />
+  <PostPage page={page} routeBase="/notes" collectionName="notes" />
+  <Navi page={page} routeBase="/notes" />
+  <FabMenu showBackBottom={true} />
+</MainPageLayout>
