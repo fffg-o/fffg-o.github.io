@@ -8,19 +8,29 @@ const translation: Translation = {
         blog: "博客",
         program:"项目",
         friends: "友链",
+        notes:"随笔",
+        maze:"迷宫"
     },
     cover: {
         title: {
-            home: "欢迎来到fffg的博客",
+            home: "",
             archive: "文章归档",
             about: "关于",
             friends: "友链",
+            notes:"随笔",
+            blog:"博客",
+            program:"项目",
+            maze:"迷宫"
         },
         subTitle: {
-            home: "生活多彩！",
+            home: "",
             archive: "共 {count} 篇文章",
             about: "一个极简的Blog模板",
             friends: "有趣的灵魂",
+            notes:"随心之言",
+            blog:"精诚之致",
+            program:"呕心沥血",
+            maze:"暂未开放"
         }
     },
     toc: "目录",

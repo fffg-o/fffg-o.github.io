@@ -8,19 +8,29 @@ const translation: Translation = {
         blog: "Blog",
         program:"Program",
         friends: "Friends",
+        notes:"Note",
+        maze:"Maze"
     },
     cover: {
         title: {
-            home: "Welcome to fffg's Blog",
+            home: "",
             archive: "Archive",
             about: "About",
             friends: "Friends",
+            notes:"Notes",
+            blog:"Blog",
+            program:"Program",
+            maze:"Maze"
         },
         subTitle: {
-            home: "Life is colorful!",
+            home: "",
             archive: "Total of {count} articles",
             about: "A minimalist blog template",
             friends: "Interesting Souls",
+            notes:"Words from the heart",
+            blog:"Sincere dedication",
+            program:"Painstaking effort",
+            maze:"null"
         }
     },
     toc: "Contents",

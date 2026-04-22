@@ -1,0 +1,48 @@
+---
+import MainPageLayout from "@layouts/MainPageLayout.astro";
+import Cover from "@components/Cover.astro";
+import Markdown from "@components/misc/Markdown.astro";
+
+import { siteConfig } from "@/config";
+import { getSpec } from "@utils/content-utils";
+
+import { i18n } from "astro:config/client";
+import i18nit from "@i18n/translation";
+import { render } from "astro:content";
+
+export function getStaticPaths() {
+  return i18n.locales.map((locale) => {
+    const localeCode = typeof locale === "string" ? locale : locale.path;
+    return {
+      params: {
+        locale: localeCode === i18n.defaultLocale ? undefined : localeCode,
+      },
+    };
+  });
+}
+
+const currentLang = Astro.currentLocale || i18n!.defaultLocale;
+const t = i18nit(currentLang);
+
+const homePost =
+  (await getSpec(currentLang, "maze")) ||
+  (await getSpec(i18n.defaultLocale, "maze"));
+
+if (!homePost) {
+  throw new Error("No home content found");
+}
+
+const { Content } = await render(homePost);
+
+const pageTitle = siteConfig.title;
+---
+
+<MainPageLayout title={pageTitle} lang={currentLang}>
+  <Cover title={t("cover.title.maze")} subTitle={t("cover.subTitle.maze")} />
+
+  <div class="max-w-[var(--page-width)] mx-auto px-4">
+    <Markdown class="mb-10 markdown-content onload-animation">
+      <Content />
+    </Markdown>
+  </div>
+</MainPageLayout>

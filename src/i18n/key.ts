@@ -6,6 +6,8 @@ export interface Translation {
         blog: string;
         program:string;
         friends: string;
+        notes:string;
+        maze:string;
     };
     cover: {
         title: {
@@ -13,12 +15,20 @@ export interface Translation {
             archive: string;
             about: string;
             friends: string;
+            notes:string;
+            blog:string;
+            program:string;
+            maze:string;
         };
         subTitle: {
             home: string;
             archive: string;
             about: string;
             friends: string;
+            notes:string;
+            blog:string;
+            program:string;
+            maze:string;
         };
     };
     toc:string;

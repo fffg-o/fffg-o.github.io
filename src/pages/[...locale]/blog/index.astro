@@ -1,0 +1,22 @@
+---
+import { i18n } from "astro:config/client";
+
+export function getStaticPaths() {
+  return i18n.locales.map(locale => {
+    const localeCode = typeof locale === "string" ? locale : locale.path;
+    return {
+      params: {
+        locale: localeCode === i18n.defaultLocale ? undefined : localeCode
+      }
+    };
+  });
+}
+
+const { locale = i18n.defaultLocale } = Astro.params;
+
+const target = locale === i18n.defaultLocale
+  ? "/blog/1/"
+  : `/${locale}/blog/1/`;
+
+return Astro.redirect(target);
+---

@@ -41,7 +41,7 @@ function getVisiblePages(current: number, total: number) {
 const visiblePages = getVisiblePages(currentPage, totalPages);
 
 const getPageUrl = (p: number) => {
-  return p === 1 ? '/' : `/${p}/`;
+  return `/blog/${p}/`;
 };
 
 const currentLang = Astro.currentLocale || i18n!.defaultLocale;
