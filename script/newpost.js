@@ -1,29 +1,115 @@
-import { readFile, writeFile, mkdir } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
-// 获取命令行参数
-const args = process.argv.slice(2);
-if (args.length < 1) {
-    console.error('Usage: node newpost.js <path> [lang] (default lang is zh-cn)');
-    process.exit(1);
+const VALID_COLLECTIONS = ['blog', 'notes'];
+const DEFAULT_CATEGORY = {
+    blog: {
+        zh: '未分类',
+        en: 'Uncategorized',
+    },
+    notes: {
+        zh: '随笔',
+        en: 'Notes',
+    },
+};
+
+function printUsage() {
+    console.error('Usage:');
+    console.error('  node script/newpost.js <blog|notes> <name>');
+    console.error('  node script/newpost.js <name>         # defaults to blog');
 }
 
-const folderPath = args[0];
-const lang = args[1] || 'zh-cn'; // 如果没有提供语言参数，默认使用 zh-cn
+function normalizeInput(args) {
+    if (args.length < 1) {
+        printUsage();
+        process.exit(1);
+    }
 
-// 确保语言参数有效
-const validLangs = ['en', 'zh-cn'];
-if (!validLangs.includes(lang)) {
-    console.error(`Invalid language: ${lang}. Valid options are: ${validLangs.join(', ')}`);
-    process.exit(1);
+    if (VALID_COLLECTIONS.includes(args[0])) {
+        const collection = args[0];
+        const folderPath = args[1];
+
+        if (!folderPath) {
+            printUsage();
+            process.exit(1);
+        }
+
+        return { collection, folderPath };
+    }
+
+    return {
+        collection: 'blog',
+        folderPath: args[0],
+    };
+}
+
+function ensureSafeFolderPath(folderPath) {
+    const normalized = folderPath.trim().replace(/^\/+|\/+$/g, '');
+
+    if (!normalized) {
+        console.error('Name cannot be empty.');
+        process.exit(1);
+    }
+
+    if (normalized.includes('..')) {
+        console.error('Name cannot contain "..".');
+        process.exit(1);
+    }
+
+    return normalized;
+}
+
+function buildFrontmatter({ title, pubDate, description, category, slugId }) {
+    return `---
+title: ${title}
+pubDate: ${pubDate}
+description: ${description}
+category: ${category}
+image: ""
+draft: true
+slugId: ${slugId}
+pinTop: 0
+---
+`;
+}
+
+function buildMarkdownContent({ lang, name, collection }) {
+    const pubDate = new Date().toISOString().split('T')[0];
+    const slugId = `momo/${collection}/${name}`;
+    const title = name;
+    const description = lang === 'zh-cn' ? '请填写简介' : 'Please add a short description';
+    const category = lang === 'zh-cn'
+        ? DEFAULT_CATEGORY[collection].zh
+        : DEFAULT_CATEGORY[collection].en;
+    const heading = lang === 'zh-cn' ? '## 开始写作' : '## Start Writing';
+    const body = lang === 'zh-cn'
+        ? '在这里编写内容。'
+        : 'Write your content here.';
+
+    return `${buildFrontmatter({
+        title,
+        pubDate,
+        description,
+        category,
+        slugId,
+    })}
+
+${heading}
+
+${body}
+`;
 }
 
 // 定义基础路径
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const basePath = join(__dirname, '..', 'src', 'content', 'blog');
+const args = process.argv.slice(2);
+const input = normalizeInput(args);
+const collection = input.collection;
+const folderPath = ensureSafeFolderPath(input.folderPath);
+const basePath = join(__dirname, '..', 'src', 'content', collection);
 
 // 创建完整路径
 const fullPath = join(basePath, folderPath);
@@ -37,34 +123,37 @@ try {
     process.exit(1);
 }
 
-// 默认的 Markdown 内容
-const defaultContent = `---
-title: new post
-date: ${new Date().toISOString().split('T')[0]}
-description: Some description here
-image: ""
-draft: false
-slug: ${folderPath}
----
+const languages = ['zh-cn', 'en'];
+const createdFiles = [];
+const skippedFiles = [];
 
-## Title
+for (const lang of languages) {
+    const filePath = join(fullPath, `${lang}.md`);
+    const content = buildMarkdownContent({
+        lang,
+        name: folderPath,
+        collection,
+    });
 
-Content goes here...
-`;
-
-// 创建语言特定的 Markdown 文件
-const filePath = join(fullPath, `${lang}.md`);
-
-try {
-    if (existsSync(filePath)) {
-        console.warn(`File already exists: ${filePath}`);
-    } else {
-        await writeFile(filePath, defaultContent, 'utf8');
-        console.log(`Created file: ${filePath}`);
+    try {
+        if (existsSync(filePath)) {
+            skippedFiles.push(filePath);
+        } else {
+            await writeFile(filePath, content, 'utf8');
+            createdFiles.push(filePath);
+        }
+    } catch (error) {
+        console.error(`Error creating file: ${error.message}`);
+        process.exit(1);
     }
-} catch (error) {
-    console.error(`Error creating file: ${error.message}`);
-    process.exit(1);
 }
 
-console.log(`Successfully created new post at: ${filePath}`);
+for (const file of createdFiles) {
+    console.log(`Created file: ${file}`);
+}
+
+for (const file of skippedFiles) {
+    console.warn(`File already exists: ${file}`);
+}
+
+console.log(`Successfully initialized ${collection} content at: ${fullPath}`);

@@ -7,7 +7,9 @@
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
-    "newpost": "node script/newpost.js"
+    "newpost": "node script/newpost.js blog",
+    "newnote": "node script/newpost.js notes",
+    "newcontent": "node script/newpost.js"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.12",
