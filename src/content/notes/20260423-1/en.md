@@ -2,7 +2,7 @@
 title: "20260423-1"
 pubDate: 2026-04-23
 description: "gpt"
-category: "随笔"
+category: "Note"
 image: ""
 draft: false
 slugId: "momo/notes/20260423-1"
