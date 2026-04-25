@@ -2,7 +2,7 @@
 title: "20260423-2"
 pubDate: 2026-04-23
 description: "gpt"
-category: "Note"
+category: "Notes"
 image: ""
 draft: false
 slugId: "momo/notes/20260423-2"

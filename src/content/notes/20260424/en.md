@@ -2,7 +2,7 @@
 title: "20260424"
 pubDate: 2026-04-24
 description: "Rain Overturning"
-category: "Note"
+category: "Notes"
 image: ""
 draft: false
 slugId: "momo/notes/20260424"

@@ -2,7 +2,7 @@
 title: "20260422"
 pubDate: 2026-04-22
 description: "A New Century"
-category: "Note"
+category: "Notes"
 image: ""
 draft: false
 slugId: "momo/notes/20260422"
