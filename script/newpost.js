@@ -72,7 +72,7 @@ pubDate: ${pubDate}
 description: ${toYamlString(description)}
 category: ${toYamlString(category)}
 image: ""
-draft: true
+draft: false
 slugId: ${toYamlString(slugId)}
 pinTop: 0
 ---
@@ -83,7 +83,7 @@ function buildMarkdownContent({ lang, name, collection }) {
     const pubDate = new Date().toISOString().split('T')[0];
     const slugId = `momo/${collection}/${name}`;
     const title = name;
-    const description = lang === 'zh-cn' ? '请填写简介' : 'Please add a short description';
+    const description = lang === 'zh-cn' ? ' ' : ' ';
     const category = lang === 'zh-cn'
         ? DEFAULT_CATEGORY[collection].zh
         : DEFAULT_CATEGORY[collection].en;
